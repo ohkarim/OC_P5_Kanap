@@ -13,6 +13,7 @@ fetch(apiUrl + "/" + productId)
     .then((data) => productsData(data));
 
 function productsData(product) {
+    document.querySelector("title").innerText = product.name;
     document.querySelector(".item__img").innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}"></img>`;
     document.getElementById("title").innerText = product.name; // innerText instead of innerHTML because no HTML here
     document.getElementById("price").innerText = product.price;
@@ -26,3 +27,4 @@ function productsData(product) {
         container.appendChild(productColor);
     };
 }
+
