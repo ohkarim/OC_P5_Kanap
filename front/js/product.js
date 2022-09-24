@@ -28,10 +28,10 @@ function productsData(product) {
     };
 }
 
+// addToCart feature, storing data to localStorage
 
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", addToCart);
-
 
 function addToCart() {
     // Grabbing data from color and quantity
