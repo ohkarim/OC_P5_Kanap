@@ -28,3 +28,39 @@ function productsData(product) {
     };
 }
 
+// TODO: Storing products to localStorage
+
+const addToCartBtn = document.getElementById("addToCart");
+addToCartBtn.addEventListener("click", addToCart);
+
+
+function addToCart() {
+    // TODO: Adding products to localStorage working, but need to fix quantity
+
+    // Grabbing data from color and quantity
+    let quantity = parseInt(document.getElementById("quantity").value); // parseInt used to get the input value as an Integer and not a String
+    // console.log(quantity);
+    let selectedColor = document.getElementById("colors").value;
+    // console.log(selectedColor);
+
+    let newProduct = {
+        _id: productId,
+        color: selectedColor,
+        quantity: quantity
+    };
+
+    // Checks if products are stored in localStorage, if not an empty array is created
+    let productsStored = JSON.parse(localStorage.getItem("products")) || [];
+
+    // Finds existing products of both identical id and color
+    let product = productsStored.find(product => product._id === newProduct._id && product.color === newProduct.color); 
+
+    // Avoid duplicates of same product, with identical id and color. If a product is found, quantity is update, if not, new product is pushed inside the array
+    if (product) {
+        product.quantity += quantity;
+    } else {
+        productsStored.push(newProduct);
+    }
+
+    localStorage.setItem("products", JSON.stringify(productsStored));
+};
