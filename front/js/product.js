@@ -28,15 +28,12 @@ function productsData(product) {
     };
 }
 
-// TODO: Storing products to localStorage
 
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", addToCart);
 
 
 function addToCart() {
-    // TODO: Adding products to localStorage working, but need to fix quantity
-
     // Grabbing data from color and quantity
     let quantity = parseInt(document.getElementById("quantity").value); // parseInt used to get the input value as an Integer and not a String
     // console.log(quantity);
