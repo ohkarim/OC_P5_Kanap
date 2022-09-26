@@ -29,6 +29,7 @@ function productsData(product) {
 }
 
 // addToCart feature, storing data to localStorage
+// TODO: avoid quantity = 0 in value and color="", maybe through function which check if these values are true, prompt user to change, and false, stores in let for both of them
 
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", addToCart);
@@ -40,24 +41,27 @@ function addToCart() {
     let selectedColor = document.getElementById("colors").value;
     // console.log(selectedColor);
 
-    let newProduct = {
-        _id: productId,
-        color: selectedColor,
-        quantity: quantity
+    if(quantity > 0 && selectedColor != "") { // checks if user selected a color and a valid quantity
+        let newProduct = {
+            _id: productId,
+            color: selectedColor,
+            quantity: quantity
+        };
+        // Checks if products are stored in localStorage, if not an empty array is created
+        let productsStored = JSON.parse(localStorage.getItem("products")) || [];
+    
+        // Finds existing products of both identical id and color
+        let product = productsStored.find(product => product._id === newProduct._id && product.color === newProduct.color); 
+    
+        // Avoid duplicates of same product, with identical id and color. If a product is found, quantity is update, if not, new product is pushed inside the array
+        if (product) {
+            product.quantity += quantity;
+        } else {
+            productsStored.push(newProduct);
+        }
+    
+        localStorage.setItem("products", JSON.stringify(productsStored));
+    } else { // prompts user that he has to choose a valid color/quantity
+        window.alert("Veuillez choisir une couleur ainsi qu'une quantité pour votre produit");
     };
-
-    // Checks if products are stored in localStorage, if not an empty array is created
-    let productsStored = JSON.parse(localStorage.getItem("products")) || [];
-
-    // Finds existing products of both identical id and color
-    let product = productsStored.find(product => product._id === newProduct._id && product.color === newProduct.color); 
-
-    // Avoid duplicates of same product, with identical id and color. If a product is found, quantity is update, if not, new product is pushed inside the array
-    if (product) {
-        product.quantity += quantity;
-    } else {
-        productsStored.push(newProduct);
-    }
-
-    localStorage.setItem("products", JSON.stringify(productsStored));
 };
