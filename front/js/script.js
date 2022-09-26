@@ -12,7 +12,7 @@ fetch(apiUrl)
 // displaying products from api data, mapping through array of products to render all of them
 
 function displayProducts(products) { // data renamed to products to describe what it contains
-    document.getElementById("items").innerHTML = products.map((product) =>  /* HTML */`
+    document.getElementById("items").innerHTML = products.map((product) =>  /* HTML */ `
         <a href="./product.html?id=${product._id}">
             <article>
                 <img src="${product.imageUrl}" alt="${product.altTxt}">

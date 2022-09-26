@@ -29,7 +29,7 @@ function productsData(product) {
 }
 
 // addToCart feature, storing data to localStorage
-// TODO: avoid quantity = 0 in value and color="", maybe through function which check if these values are true, prompt user to change, and false, stores in let for both of them
+// TODO: redirecting to cart.html once a product is added in the cart ?
 
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", addToCart);
