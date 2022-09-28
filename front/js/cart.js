@@ -12,17 +12,14 @@ function displayCart(productsStored) {
         
         let container = document.getElementById("cart__items");
         let productDetails = document.createElement("article");
-        productDetails.setAttribute("class", "cart__item"); // check dataset api
+        productDetails.setAttribute("class", "cart__item"); // TODO: check dataset api
         productDetails.setAttribute("data-id", productId);
         productDetails.setAttribute("data-color", productColor);
         container.appendChild(productDetails);
     
         fetch(apiUrl + "/" + productId)
             .then((response) => response.json())
-            .then((data) => productsData(data, product, productDetails)); 
-        
-        // TODO: update quantity in local storage, and get "Supprimer" btn working
-        
+            .then((data) => productsData(data, product, productDetails));  
     };  
 };
 
@@ -49,21 +46,38 @@ function productsData(data, product, productDetails) {
         </div>
     `;
     
-    const deleteBtn = productDetails.querySelector(".deleteItem"); // on parent not on document
-    deleteBtn.addEventListener("click", removeItem); // check with event.target
+    // Delete a specific product from cart
 
-    function removeItem(event) { // must remove on both localStorage and HTML
-        const index = productsStored.indexOf(product); // stores index value of this specific product in localStorage
-        console.log(index);
-        if (index > -1) { // only splices if item is found in array
-            productsStored.splice(index, 1); // removes the product from array, 2nd parameter means remove one item only
-            localStorage.setItem("products", JSON.stringify(productsStored)); // updates localStorage with modified array
-        }
-        console.log(productsStored);
+    const deleteBtn = productDetails.querySelector(".deleteItem"); // On parent not on document
+    deleteBtn.addEventListener("click", removeItem);
+
+    function removeItem(event) { // Must remove on both localStorage and HTML
+        const index = productsStored.indexOf(product); // Stores index value of this specific product in localStorage
+        
+        if (index > -1) { // Only splices if item is found in array
+            productsStored.splice(index, 1); // Removes the product from array, 2nd parameter means remove one item only
+            localStorage.setItem("products", JSON.stringify(productsStored)); // Updates localStorage with modified array
+        };
 
         // event.target refers to this specific btn, deleteBtn. Used to retrieve data from parentElement
-    const itemContainer = event.target.parentElement.closest("article"); // first retrieve target first parent, then the "article" parent
-        itemContainer.remove(); // delete the full article (product) from HTML
+        const itemContainer = event.target.parentElement.closest("article"); // First retrieve target first parent, then the "article" parent
+        itemContainer.remove(); // Delete the full article (product) from HTML
+    };
+
+    // Updating quantity
+
+    const itemQuantity = productDetails.querySelector(".itemQuantity"); // On parent not on document
+    itemQuantity.addEventListener("change", updateQuantity);
+
+    function updateQuantity() {
+        const newQuantity = parseInt(itemQuantity.value); // Converts into integer
+        console.log("Quantité: " + newQuantity);
+
+        const index = productsStored.indexOf(product);
+        console.log("Index: " + index);
+
+        productsStored[index].quantity = newQuantity; // Updating quantity in object
+        localStorage.setItem("products", JSON.stringify(productsStored)); // Updating localStorage to store the quantity change
     };
 };
 
