@@ -12,9 +12,9 @@ function displayCart(productsStored) {
         
         let container = document.getElementById("cart__items");
         let productDetails = document.createElement("article");
-        productDetails.setAttribute("class", "cart__item"); // TODO: check dataset api
-        productDetails.setAttribute("data-id", productId);
-        productDetails.setAttribute("data-color", productColor);
+        productDetails.setAttribute("class", "cart__item");
+        productDetails.dataset.id = productId; // Using dataset instead of .setAttribute ---- productDetails.setAttribute("data-id", productId); ----
+        productDetails.dataset.color = productColor;
         container.appendChild(productDetails);
     
         fetch(apiUrl + "/" + productId)
