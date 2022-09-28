@@ -20,7 +20,7 @@ function productsData(product) {
     document.getElementById("description").innerText = product.description;
 
     const container = document.getElementById("colors")
-    for (color of product.colors) { // looping through array
+    for (let color of product.colors) { // looping through array
         const productColor = document.createElement("option");
         productColor.value = color;
         productColor.innerText = color;
@@ -29,7 +29,7 @@ function productsData(product) {
 }
 
 // addToCart feature, storing data to localStorage
-// TODO: redirecting to cart.html once a product is added in the cart ?
+// TODO: redirecting to cart.html once a product is added in the cart ? Pop up go to cart or not + max quantity 100 per order/per product, both here and in cart
 
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", addToCart);
