@@ -4,35 +4,41 @@ const apiUrl = "http://localhost:3000/api/products";
 let productAddress = new URLSearchParams(document.location.search); // stores current URL in a let
 let productId = productAddress.get("id"); // stores product id in a let
 
-console.log(productId);
+// Elements selectors
 
-// Data rendering
+let productTitle = document.getElementById("title");
+let productImg = document.querySelector(".item__img");
+let img = document.createElement("img");
+productImg.appendChild(img);
+let productPrice = document.getElementById("price");
+let productDescription = document.getElementById("description");
+let productColors = document.getElementById("colors");
 
-fetch(apiUrl + "/" + productId)
+// Fetching data from API, and rendering HTML
+
+async function displayProduct() {
+    await fetch(apiUrl + "/" + productId)
     .then((response) => response.json())
-    .then((data) => productsData(data));
+    .then((data) => {
+        productTitle.innerHTML = data.name;
+        img.setAttribute("src", data.imageUrl);
+        img.setAttribute("alt", data.altTxt);
+        productPrice.innerHTML = data.price;
+        productDescription.innerHTML = data.description;
 
-function productsData(product) {
-    document.querySelector("title").innerText = product.name;
-    document.querySelector(".item__img").innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}"></img>`;
-    document.getElementById("title").innerText = product.name; // innerText instead of innerHTML because no HTML here
-    document.getElementById("price").innerText = product.price;
-    document.getElementById("description").innerText = product.description;
+        // Adding colors options
+        for (let color of data.colors) { // looping through array
+            let colorOption = document.createElement("option");
+            colorOption.value = color;
+            colorOption.innerText = color;
+            productColors.appendChild(colorOption);
+        };
+    });
+};
 
-    const container = document.getElementById("colors")
-    for (let color of product.colors) { // looping through array
-        const productColor = document.createElement("option");
-        productColor.value = color;
-        productColor.innerText = color;
-        container.appendChild(productColor);
-    };
-}
+displayProduct();
 
-// addToCart feature, storing data to localStorage
-// TODO: redirecting to cart.html once a product is added in the cart ? Pop up go to cart or not + max quantity 100 per order/per product, both here and in cart
-
-const addToCartBtn = document.getElementById("addToCart");
-addToCartBtn.addEventListener("click", addToCart);
+// Adding product to cart
 
 function addToCart() {
     // Grabbing data from color and quantity
@@ -41,7 +47,7 @@ function addToCart() {
     let selectedColor = document.getElementById("colors").value;
     // console.log(selectedColor);
 
-    if(quantity > 0 && selectedColor != "") { // checks if user selected a color and a valid quantity
+    if(quantity > 0 && quantity <= 101 && selectedColor != "") { // checks if user selected a color and a valid quantity
         let newProduct = {
             _id: productId,
             color: selectedColor,
@@ -52,16 +58,35 @@ function addToCart() {
     
         // Finds existing products of both identical id and color
         let product = productsStored.find(product => product._id === newProduct._id && product.color === newProduct.color); 
-    
-        // Avoid duplicates of same product, with identical id and color. If a product is found, quantity is update, if not, new product is pushed inside the array
+        
+        // Avoid duplicates of same product, with identical id and color. If a product is found, quantity is updated, if not, new product is pushed inside the array
         if (product) {
-            product.quantity += quantity;
+            if ((product.quantity + quantity) <= 100){
+                product.quantity += quantity;
+                if(confirm("Produit ajouté au panier. Souhaitez vous accéder au panier ?")){
+                    window.location.href = "./cart.html";
+                };
+            } else {
+                alert("Quantité maximale atteinte dans le panier pour un même produit")
+            };
         } else {
             productsStored.push(newProduct);
-        }
+            if(confirm("Produit ajouté au panier. Souhaitez vous accéder au panier ?")){
+                window.location.href = "./cart.html";
+            };
+        };
     
         localStorage.setItem("products", JSON.stringify(productsStored));
+
     } else { // prompts user that he has to choose a valid color/quantity
-        window.alert("Veuillez choisir une couleur ainsi qu'une quantité pour votre produit");
+        window.alert("Veuillez choisir une couleur ainsi qu'une quantité valides pour votre produit");
     };
 };
+
+const quantityField = document.getElementById("quantity");
+quantityField.addEventListener("keydown", (event) => { // prevent typing in the quantity field
+    event.preventDefault();
+});
+
+const addToCartBtn = document.getElementById("addToCart");
+addToCartBtn.addEventListener("click", addToCart);
