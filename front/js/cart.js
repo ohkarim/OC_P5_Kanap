@@ -110,10 +110,11 @@ function displayCart() {
                         const index2 = productsWithPrice.indexOf(productOnlyPriceQuantity);
                         console.log(productsWithPrice);
 
+                        // TODO: wrong index on productsWithPrice
                         productsStored[index].quantity = newQuantity; // Updating quantity in object
                         localStorage.setItem("products", JSON.stringify(productsStored)); // Updating localStorage to store the quantity change
                         console.log(productsStored);
-                        productsWithPrice[index2].quantity = newQuantity;
+                        productsWithPrice[index].quantity = newQuantity;
                         let sumPrice = productsWithPrice.reduce((accumulator, product) => {
                             return accumulator + (product.price * product.quantity);
                         }, 0);
