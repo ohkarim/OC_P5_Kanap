@@ -71,14 +71,16 @@ function displayCart() {
                     const deleteBtn = productDetails.querySelector(".deleteItem"); // On parent not on document
                     deleteBtn.addEventListener("click", (event) => {
                         const index = productsStored.indexOf(product); // Stores index value of this specific product in localStorage
+                        const index2 = productsWithPrice.indexOf(productOnlyPriceQuantity);
+                        console.log(index2);
 
-                        if (index > -1) { // Only splices if item is found in array
+                        if (index > -1 && index2 > -1) { // Only splices if item is found in array
                             productsStored.splice(index, 1); // Removes the product from array, 2nd parameter means remove one item only
                             localStorage.setItem("products", JSON.stringify(productsStored)); // Updates localStorage with modified array
                             // event.target refers to this specific btn, deleteBtn. Used to retrieve data from parentElement
                             const itemContainer = event.target.parentElement.closest("article"); // First retrieve target first parent, then the "article" parent
                             itemContainer.remove(); // Delete the full article (product) from HTML
-                            productsWithPrice.splice(index,1);
+                            productsWithPrice.splice(index2, 1);
                             let sumPrice = productsWithPrice.reduce((accumulator, product) => {
                                 return accumulator + (product.price * product.quantity);
                             }, 0);
@@ -107,14 +109,13 @@ function displayCart() {
                         const index = productsStored.indexOf(product);
                         console.log("Index: " + index);
 
-                        const index2 = productsWithPrice.indexOf(productOnlyPriceQuantity);
-                        console.log(productsWithPrice);
-
                         // TODO: wrong index on productsWithPrice
                         productsStored[index].quantity = newQuantity; // Updating quantity in object
                         localStorage.setItem("products", JSON.stringify(productsStored)); // Updating localStorage to store the quantity change
                         console.log(productsStored);
-                        productsWithPrice[index].quantity = newQuantity;
+
+                        const index2 = productsWithPrice.indexOf(productOnlyPriceQuantity);
+                        productsWithPrice[index2].quantity = newQuantity;
                         let sumPrice = productsWithPrice.reduce((accumulator, product) => {
                             return accumulator + (product.price * product.quantity);
                         }, 0);
