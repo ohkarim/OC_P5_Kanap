@@ -109,7 +109,6 @@ function displayCart() {
                         const index = productsStored.indexOf(product);
                         console.log("Index: " + index);
 
-                        // TODO: wrong index on productsWithPrice
                         productsStored[index].quantity = newQuantity; // Updating quantity in object
                         localStorage.setItem("products", JSON.stringify(productsStored)); // Updating localStorage to store the quantity change
                         console.log(productsStored);

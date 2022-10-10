@@ -6,6 +6,7 @@ let productId = productAddress.get("id"); // stores product id in a let
 
 // Elements selectors
 
+let productTitleTop = document.querySelector("title");
 let productTitle = document.getElementById("title");
 let productImg = document.querySelector(".item__img");
 let img = document.createElement("img");
@@ -20,6 +21,7 @@ async function displayProduct() {
     await fetch(apiUrl + "/" + productId)
     .then((response) => response.json())
     .then((data) => {
+        productTitleTop.innerHTML = data.name;
         productTitle.innerHTML = data.name;
         img.setAttribute("src", data.imageUrl);
         img.setAttribute("alt", data.altTxt);
