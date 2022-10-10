@@ -8,7 +8,7 @@ let productsWithPrice = [];
 console.log(productsStored);
 
 function displayCart() {
-    if (!(productsStored == null || productsStored.length == 0)) { // Check if productsStored exists
+    if (!(productsStored == null || productsStored.length === 0)) { // Check if productsStored exists
         for (let product of productsStored) {
             productId = product._id,
             productColor = product.color,
@@ -93,6 +93,16 @@ function displayCart() {
                             }, 0);
                             const totalQuantity = document.getElementById("totalQuantity");
                             totalQuantity.innerText = sumQuantity;
+                        };
+
+                        if (productsStored.length === 0) {
+                            let container = document.querySelector(".cart");
+                            container.replaceChildren(); // to remove all children of the section
+                            let emptyCart = document.createElement("p");
+                            emptyCart.setAttribute("id", "empty__cart");
+                            emptyCart.innerText = "Votre panier est vide, rendez-vous sur la page d'accueil afin de choisir l'un de nos somptueux canapés !";
+                            emptyCart.style["text-align"] = "center";
+                            container.appendChild(emptyCart);
                         };
                     });
 
