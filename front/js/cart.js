@@ -1,4 +1,4 @@
-// TODO: clear cart after order is sent ?
+// TODO: clear cart after order is sent ? - OK mandatory 
 
 // Fetching data from API
 
@@ -239,6 +239,8 @@ function testingForm(){
                 // Storing in let the orderId response from API
                 let orderId = data.orderId;
                 console.log(orderId);
+
+                // TODO: delete cart in local storage here
 
                 // Redirecting user to confirmation page
                 window.location.replace(`./confirmation.html?id=${orderId}`); // Using .replace() instead of .href() to prevent user going back to the cart page
