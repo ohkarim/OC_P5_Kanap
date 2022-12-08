@@ -1,5 +1,3 @@
-// TODO: clear cart after order is sent ? - OK mandatory 
-
 // Fetching data from API
 
 const apiUrl = "http://localhost:3000/api/products";
@@ -240,10 +238,11 @@ function testingForm(){
                 let orderId = data.orderId;
                 console.log(orderId);
 
-                // TODO: delete cart in local storage here
-
                 // Redirecting user to confirmation page
                 window.location.replace(`./confirmation.html?id=${orderId}`); // Using .replace() instead of .href() to prevent user going back to the cart page
+                
+                // Clearing local storage after order is sent
+                localStorage.clear();
             })
             .catch((error) => {
                 console.error('Error:', error);
